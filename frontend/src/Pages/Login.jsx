@@ -121,17 +121,7 @@ const Login = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         />
-        <div className="mt-6">
-          <h2 className="text-lg font-semibold text-gray-800">
-            New Update Available
-          </h2>
-          <p className="text-gray-600 text-sm mt-2">
-            We have added some new awesome features.
-          </p>
-          <button className="mt-4 px-4 py-2 bg-white border border-gray-300 rounded hover:shadow">
-            Learn More
-          </button>
-        </div>
+        
       </div>
     </div>
   );

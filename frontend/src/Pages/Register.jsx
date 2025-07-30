@@ -1,8 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
-import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Register = () => {
   const {
@@ -12,12 +12,28 @@ const Register = () => {
     watch,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Registered Data:", data);
-    // Add your registration logic here (API call, Firebase, etc.)
-  };
-
+  const navigate = useNavigate();
   const password = watch("password");
+
+  const onSubmit = async (data) => {
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/register", {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      });
+
+      if (res.data.success) {
+        alert("Registration successful! Please login.");
+        navigate("/login");
+      }
+    } catch (err) {
+      console.error("Registration failed", err);
+      alert(
+        err?.response?.data?.message || "Registration failed. Try again later."
+      );
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
@@ -37,11 +53,17 @@ const Register = () => {
             <div>
               <input
                 type="text"
-                placeholder="Full Name"
+                placeholder="Username"
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                {...register("name", { required: "Full Name is required" })}
+                {...register("username", {
+                  required: "Username is required",
+                })}
               />
-              {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
+              {errors.username && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.username.message}
+                </p>
+              )}
             </div>
 
             <div>
@@ -51,7 +73,11 @@ const Register = () => {
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 {...register("email", { required: "Email is required" })}
               />
-              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
 
             <div>
@@ -68,12 +94,14 @@ const Register = () => {
                 })}
               />
               {errors.password && (
-                <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 
             <div>
-              <input  
+              <input
                 type="password"
                 placeholder="Confirm Password"
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -84,7 +112,9 @@ const Register = () => {
                 })}
               />
               {errors.confirmPassword && (
-                <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.confirmPassword.message}
+                </p>
               )}
             </div>
 
@@ -116,9 +146,12 @@ const Register = () => {
           transition={{ duration: 0.6 }}
         />
         <div className="mt-6">
-          <h2 className="text-lg font-semibold text-gray-800">Safe and Secure</h2>
+          <h2 className="text-lg font-semibold text-gray-800">
+            Safe and Secure
+          </h2>
           <p className="text-gray-600 text-sm mt-2">
-            Your data is encrypted and protected. Start your journey with us now!
+            Your data is encrypted and protected. Start your journey with us
+            now!
           </p>
           <button className="mt-4 px-4 py-2 bg-white border border-gray-300 rounded hover:shadow">
             Learn More

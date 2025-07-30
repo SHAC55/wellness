@@ -33,7 +33,17 @@ A full-stack MERN-based application to manage and publish wellness sessions with
 | POST   | `/api/auth/register` | Register new user |
 | POST   | `/api/auth/login`    | Login with credentials |
 
----
+**.env example
+
+# MongoDB Connection URI
+MONGO_URI=mongodb://localhost:27017/wellnessDB
+
+# JWT Secret Key
+JWT_SECRET=my_jwt_secret_key
+
+# OPort for backend server
+PORT=5000
+
 
 ## 📘 API Details
 
